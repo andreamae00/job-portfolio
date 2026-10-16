@@ -1,0 +1,175 @@
+:root {
+    --bg: #FEE585;
+    --yellow: #ffd93b;
+    --font-body: "Questrial", system-ui, sans-serif;
+    --font-title: "Sue Ellen Francisco", "Comic Sans MS", cursive;
+    /* where the yellow canvas sits inside artwork-pola.png (440x533) */
+    --in-l: 11.1%;
+    --in-t: 8.3%;
+    --in-w: 81.6%;
+    --in-h: 85.1%;
+}
+* { box-sizing: border-box;
+    padding:0%;
+    margin: 0%;
+ }
+[hidden] { display: none !important; }
+body {
+    margin: 0;                  
+    padding: 0;                 
+    overflow-x: hidden;         
+    background-image: url(../../assets/img/main-background.png);
+    min-height: 100vh;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;    
+    background-position: center;
+    background-attachment: fixed; 
+}
+body.no-scroll { overflow: hidden; }
+
+
+/* ---------- Nav (same look as index.css) ---------- */
+.nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 15px;
+    padding: 5px;
+    background-color: rgba(255, 255, 255, 0.8);   /* 80% see-through bar */
+    border-bottom: 2px solid rgb(169, 160, 160);
+    z-index: 1000;              /* stays under the book popup (2000) */
+}
+.nav .logo {
+    margin-right: auto;
+    margin-left: 20px;
+    width: 70px;
+    height: auto;
+}
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.nav a {
+    text-decoration: none;
+    margin-right: 50px;
+    color: black;
+    font-size: 20px;
+    font-weight: 500;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.nav a:hover, .nav a:focus-visible { color: rgb(44, 42, 42); }
+
+/* hamburger button: hidden on desktop, shown on small screens */
+.nav-toggle {
+    margin-top: 2px;
+    display: none;
+    background: none;
+    border: 2px solid #000;
+    border-radius: 6px;
+    font-size: 1.4rem;
+    line-height: 1;
+    padding: .2rem .6rem;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+/* ---------- Title + grid ---------- */
+.gallery-wrap { max-width: 1400px; margin: 0 auto; padding: clamp(1.5rem, 5vw, 4rem) 1rem 4rem; }
+.page-title {
+    font-family: var(--font-title); font-weight: 400; text-transform: uppercase; text-align: center;
+    font-size: clamp(2.2rem, 9vw, 5.9rem); letter-spacing: .22em; padding-left: .22em; padding-top: 2.5rem; line-height: 1.1;
+    margin: 0 0 clamp(1.5rem, 4vw, 3.5rem); text-shadow: 3px 3px 0 var(--yellow);
+}
+
+.gallery { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(.75rem, 2.5vw, 2.25rem); }
+
+.section-title {
+    font-family: var(--font-title); font-weight: 400; text-transform: uppercase; text-align: center;
+    font-size: clamp(2.2rem, 8vw, 5.5rem); letter-spacing: .22em; padding-left: .22em; padding-top: 5rem; line-height: 1.1;
+    margin: 0 0 clamp(1.5rem, 4vw, 3.5rem); text-shadow: 3px 3px 0 var(--yellow);
+}
+
+/* ---------- Film frame card ---------- */
+.frame {
+    position: relative; display: block; width: 100%; aspect-ratio: 440 / 533;
+    padding: 0; border: 0; background: none; cursor: pointer;
+    transform-origin: left center; transition: transform .35s ease, box-shadow .35s ease;
+}
+.frame-bg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+/* the artwork file already includes the film frame, so it fills the whole card */
+.frame-art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block; }
+.frame:focus-visible { outline: 3px solid #000; outline-offset: 4px; }
+@media (hover: hover) {
+    .frame:hover { transform: perspective(900px) rotateY(-16deg); box-shadow: 14px 10px 24px rgba(0,0,0,.35); }
+}
+
+/* ---------- Book popup ---------- */
+.modal-book {
+    position: fixed; inset: 0; z-index: 2000; overflow-y: auto; padding: 4rem 1rem 2rem;
+    background: rgba(255, 243, 131, .86); backdrop-filter: blur(3px);
+}
+.book-scroll { min-height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.25rem; }
+.book-close {
+    position: fixed; margin-top: .75rem; right: 1rem; z-index: 5; width: 44px; height: 44px; border-radius: 50%;
+    border: 2px solid #000; background: #fff; font-size: 1.8rem; line-height: 1; cursor: pointer;
+}
+.book-close:hover { background: var(--yellow); }
+.book { width: min(880px, 90vw); display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: #fffbe0; perspective: 2000px; }
+.page { position: relative; aspect-ratio: 440 / 533; container-type: inline-size; }
+
+.page-left { background: #000; }
+.page-left .frame-art { opacity: .3; }
+.page-caption {
+    position: absolute; inset: var(--in-t) var(--in-l); z-index: 1; display: grid; place-items: center; margin: 0;
+    text-align: center; color: var(--yellow); font-size: 8.5cqw; line-height: 1.2; text-transform: uppercase;
+}
+.page-text { position: absolute; left: var(--in-l); top: var(--in-t); width: var(--in-w); height: var(--in-h); padding: 4cqw 4.5cqw; overflow-y: auto; }
+.page-text h2 { font-weight: 400; font-size: 8.5cqw; text-align: center; margin: 0 0 6cqw; line-height: 1.15; }
+.page-text p { font-size: 5.1cqw; line-height: 1.45; text-align: justify; margin: 0; }
+
+/* right page swings open from the spine */
+.page-right { transform-origin: left center; backface-visibility: hidden; }
+.modal-book.is-open .page-left  { animation: leftIn .5s ease both; }
+.modal-book.is-open .page-right { animation: pageOpen .9s .2s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes leftIn   { from { opacity: 0; transform: scale(.92); } to { opacity: 1; transform: none; } }
+@keyframes pageOpen { from { transform: rotateY(-100deg); filter: brightness(.5); } to { transform: none; filter: none; } }
+@keyframes pageOpenMobile { from { transform: rotateX(-95deg); filter: brightness(.5); } to { transform: none; filter: none; } }
+
+.book-nav { display: flex; align-items: center; gap: 1rem; }
+.book-nav button { font: inherit; padding: .55rem 1.1rem; border: 2px solid #000; background: #fff; border-radius: 999px; cursor: pointer; }
+.book-nav button:hover { background: var(--yellow); }
+.book-nav button:focus-visible, .book-close:focus-visible { outline: 3px solid #000; outline-offset: 3px; }
+#counter { min-width: 4ch; text-align: center; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 700px) {
+    body { padding-top: 58px; }
+    .nav { flex-wrap: wrap; padding: 6px 8px; }
+    .nav .logo { width: 42px; margin-left: 6px; }
+    .nav-toggle { display: block; }
+    .nav-links {
+        display: none; flex-direction: column; align-items: stretch; gap: 0;
+        width: calc(100% + 16px); margin: 6px -8px -6px;
+        background: #ffffff;            /* solid, 100% opacity - change this colour freely */
+    }
+    .nav-links.open { display: flex; }
+    .nav-links a { margin-right: 0; padding: .75rem 1rem; text-align: center; font-size: 18px; color: #050505; border-top: 1px solid rgba(31, 31, 31, 0.25); }
+    .nav-links a:hover, .nav-links a:focus-visible { color: #fefefe; background: #1c1c1c; }
+}
+@media (max-width: 900px) { .gallery { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 720px) {
+    .gallery { grid-template-columns: repeat(2, 1fr); }
+    .book { grid-template-columns: 1fr; width: min(92vw, 420px); }
+    .page-right { transform-origin: center top; }
+    .modal-book.is-open .page-right { animation-name: pageOpenMobile; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .frame, .frame:hover { transition: none; transform: none; }
+    .modal-book.is-open .page-left, .modal-book.is-open .page-right { animation: none; }
+}
